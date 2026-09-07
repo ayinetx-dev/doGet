@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emasku - Aplikasi Kredit Emas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800">
+
+    <!-- LOGIN CONTAINER -->
+    <div id="login-section" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-slate-100">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-extrabold text-amber-600">EMASKU</h1>
+                <p class="text-sm text-slate-500 mt-1">Platform Kredit & Tabungan Emas Terpercaya</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Username</label>
+                    <input type="text" id="username" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="Masukkan username">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Password Custom</label>
+                    <input type="password" id="password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="Masukkan password">
+                </div>
+                <button onclick="handleLogin()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2.5 rounded-lg transition duration-200 shadow-md">Masuk Aplikasi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="app-section" class="hidden min-h-screen flex flex-col">
+        <!-- Navbar -->
+        <header class="bg-amber-600 text-white shadow-md">
+            <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+                <h1 class="text-xl font-bold tracking-wider">EMASKU DASHBOARD</h1>
+                <div class="flex items-center gap-4">
+                    <span id="user-display" class="text-sm font-medium bg-amber-700 px-3 py-1 rounded-full"></span>
+                    <button onclick="handleLogout()" class="text-xs bg-white text-amber-700 px-3 py-1.5 rounded-md font-semibold hover:bg-slate-100">Keluar</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="bg-white shadow border-b overflow-x-auto">
+            <div class="max-w-7xl mx-auto flex space-x-2 px-4 py-2 whitespace-nowrap">
+                <button onclick="switchTab('dashboard')" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg bg-amber-50 text-amber-700">Dashboard</button>
+                <button onclick="switchTab('pembelian')" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100">Pembelian</button>
+                <button onclick="switchTab('mutasi')" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100">Deposit & Withdraw</button>
+                <button onclick="switchTab('arisan')" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100">Arisan Emas</button>
+                <button onclick="switchTab('promo')" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100">Promo & Detail</button>
+            </div>
+        </nav>
+
+        <!-- Content Body -->
+        <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6">
+            
+            <!-- DASHBOARD TAB -->
+            <div id="tab-dashboard" class="tab-content space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white p-6 rounded-xl shadow border border-slate-100">
+                        <p class="text-xs text-slate-500 uppercase font-semibold">Saldo Emas Anda</p>
+                        <h3 class="text-2xl font-bold text-amber-600 mt-2">2.45 Gram</h3>
+                        <p class="text-xs text-slate-400 mt-1">Estimasi: Rp 3.185.000</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow border border-slate-100">
+                        <p class="text-xs text-slate-500 uppercase font-semibold">Total Tagihan Kredit</p>
+                        <h3 class="text-2xl font-bold text-rose-600 mt-2">Rp 1.250.000</h3>
+                        <p class="text-xs text-slate-400 mt-1">Jatuh Tempo: 25 Sep 2026</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow border border-slate-100">
+                        <p class="text-xs text-slate-500 uppercase font-semibold">Status Akun</p>
+                        <h3 class="text-2xl font-bold text-emerald-600 mt-2">Terverifikasi</h3>
+                        <p class="text-xs text-slate-400 mt-1">Member Aktif Emasku</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PEMBELIAN TAB -->
+            <div id="tab-pembelian" class="tab-content hidden max-w-xl mx-auto bg-white p-6 rounded-xl shadow border">
+                <h2 class="text-lg font-bold text-slate-800 mb-4">Form Pembelian / Cicil Emas</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Kategori Emas</label>
+                        <select id="kategori-pembelian" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <option>Logam Mulia Antam</option>
+                            <option>UBS Gold</option>
+                            <option>Custom Batangan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Jumlah (Gram)</label>
+                        <input type="number" step="0.1" id="gram-beli" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Contoh: 1 / 5">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Estimasi Total Harga (Rp)</label>
+                        <input type="number" id="total-beli" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Masukkan total harga">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Metode Pembayaran</label>
+                        <select id="metode-pembayaran" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <option>Transfer Bank BCA</option>
+                            <option>Transfer Bank Mandiri</option>
+                            <option>Virtual Account BNI</option>
+                            <option>QRIS</option>
+                        </select>
+                    </div>
+                    <button onclick="submitPembelian()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 rounded-lg transition">Proses Pembelian</button>
+                </div>
+            </div>
+
+            <!-- DEPOSIT & WITHDRAW TAB -->
+            <div id="tab-mutasi" class="tab-content hidden max-w-xl mx-auto bg-white p-6 rounded-xl shadow border">
+                <h2 class="text-lg font-bold text-slate-800 mb-4">Deposit & Withdraw Saldo</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Tipe Transaksi</label>
+                        <select id="tipe-mutasi" class="w-full px-3 py-2 border rounded-lg">
+                            <option value="Deposit">Deposit Saldo</option>
+                            <option value="Withdraw">Withdraw / Penarikan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Jumlah (Rp)</label>
+                        <input type="number" id="jumlah-mutasi" class="w-full px-3 py-2 border rounded-lg" placeholder="Masukkan nominal">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Tujuan Bank / Sumber Bank</label>
+                        <input type="text" id="tujuan-bank" class="w-full px-3 py-2 border rounded-lg" placeholder="Nama Bank & No Rekening (Contoh: BCA 123456789)">
+                    </div>
+                    <button onclick="submitMutasi()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 rounded-lg transition">Kirim Pengajuan</button>
+                </div>
+            </div>
+
+            <!-- ARISAN TAB -->
+            <div id="tab-arisan" class="tab-content hidden max-w-xl mx-auto bg-white p-6 rounded-xl shadow border">
+                <h2 class="text-lg font-bold text-slate-800 mb-4">Arisan Emas</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Nama Kelompok Arisan</label>
+                        <input type="text" id="nama-kelompok" class="w-full px-3 py-2 border rounded-lg" placeholder="Contoh: Arisan Emas Nusantara 5 Gram">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Setoran Bulanan (Rp)</label>
+                        <input type="number" id="setoran-arisan" class="w-full px-3 py-2 border rounded-lg" placeholder="Nominal setoran per bulan">
+                    </div>
+                    <button onclick="submitArisan()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 rounded-lg transition">Gabung Arisan</button>
+                </div>
+            </div>
+
+            <!-- PROMO & DETAIL DATA TAB -->
+            <div id="tab-promo" class="tab-content hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow border">
+                        <h3 class="text-md font-bold text-amber-600 mb-3">🔥 Promo & Penawaran Spesial</h3>
+                        <div id="promo-container" class="space-y-3 text-sm">
+                            <p class="text-slate-500">Memuat data promo...</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow border space-y-4">
+                        <div>
+                            <h3 class="text-md font-bold text-amber-600 mb-1">💡 Info Tebus Murah</h3>
+                            <p id="info-tebus-murah" class="text-sm text-slate-600">Memuat informasi...</p>
+                        </div>
+                        <hr>
+                        <div>
+                            <h3 class="text-md font-bold text-amber-600 mb-1">🛠️ Pusat Bantuan</h3>
+                            <p id="info-bantuan" class="text-sm text-slate-600">Memuat informasi...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- SCRIPT INTERAKSI FRONTEND -->
+    <script>
+        let currentUser = "";
+
+        function handleLogin() {
+            let u = document.getElementById('username').value;
+            let p = document.getElementById('password').value;
+            if(!u || !p) {
+                alert("Harap isi username dan password!");
+                return;
+            }
+
+            google.script.run.withSuccessHandler(function(res) {
+                if(res.success) {
+                    currentUser = res.username;
+                    document.getElementById('user-display').innerText = currentUser;
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('app-section').classList.remove('hidden');
+                    loadAppData();
+                } else {
+                    alert(res.message);
+                }
+            }).loginUser(u, p);
+        }
+
+        function handleLogout() {
+            currentUser = "";
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('app-section').classList.add('hidden');
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-amber-50', 'text-amber-700');
+                el.classList.add('text-slate-600', 'hover:bg-slate-100');
+            });
+
+            document.getElementById('tab-' + tabName).classList.remove('hidden');
+            event.currentTarget.classList.add('bg-amber-50', 'text-amber-700');
+            event.currentTarget.classList.remove('text-slate-600', 'hover:bg-slate-100');
+        }
+
+        function submitPembelian() {
+            let data = {
+                username: currentUser,
+                kategori: document.getElementById('kategori-pembelian').value,
+                gram: document.getElementById('gram-beli').value,
+                total: document.getElementById('total-beli').value,
+                metode: document.getElementById('metode-pembayaran').value
+            };
+            google.script.run.withSuccessHandler(res => alert(res.message)).processPembelian(data);
+        }
+
+        function submitMutasi() {
+            let data = {
+                username: currentUser,
+                tipe: document.getElementById('tipe-mutasi').value,
+                jumlah: document.getElementById('jumlah-mutasi').value,
+                bank: document.getElementById('tujuan-bank').value
+            };
+            google.script.run.withSuccessHandler(res => alert(res.message)).processMutasi(data);
+        }
+
+        function submitArisan() {
+            let data = {
+                username: currentUser,
+                namaKelompok: document.getElementById('nama-kelompok').value,
+                setoran: document.getElementById('setoran-arisan').value
+            };
+            google.script.run.withSuccessHandler(res => alert(res.message)).processArisan(data);
+        }
+
+        function loadAppData() {
+            google.script.run.withSuccessHandler(data => {
+                // Render Promo
+                let promoHTML = "";
+                data.promos.forEach(p => {
+                    promoHTML += `<div class="p-3 bg-amber-50 rounded-lg border border-amber-100">
+                        <p class="font-semibold text-amber-900">${p.judul} (Diskon ${p.diskon})</p>
+                        <p class="text-xs text-slate-600 mt-1">${p.desc}</p>
+                    </div>`;
+                });
+                document.getElementById('promo-container').innerHTML = promoHTML;
+                document.getElementById('info-tebus-murah').innerText = data.tebusMurah;
+                document.getElementById('info-bantuan').innerText = data.pusatBantuan;
+            }).getAppData();
+        }
+    </script>
+</body>
+</html>
